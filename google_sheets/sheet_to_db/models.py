@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Orders(models.Model):
+class Order(models.Model):
 
     id_from_sheet = models.IntegerField(verbose_name='№')
     number_of_order = models.IntegerField(verbose_name='заказ №')
