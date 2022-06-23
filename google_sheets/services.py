@@ -60,18 +60,20 @@ class SheetToDatabase:
         usd_to_rub = UsdCourse()
 
         for obj_list in list_of_obj_list:
-            order_obj = Order()
-            order_obj.id_from_sheet = int(obj_list[0])
-            order_obj.number_of_order = int(obj_list[1])
-            order_obj.price_usd = float(obj_list[2])
-            order_obj.delivery_time = datetime.strptime(obj_list[3], '%d.%m.%Y')
-            order_obj.price_rub = order_obj.price_usd * usd_to_rub.value
-            order_obj.save()
+            SheetToDatabase.create_object_by_list(obj_list, usd_to_rub)
+
+    @staticmethod
+    def create_object_by_list(obj_list, usd_to_rub):
+        order_obj = Order()
+        order_obj.id_from_sheet = int(obj_list[0])
+        order_obj.number_of_order = int(obj_list[1])
+        order_obj.price_usd = float(obj_list[2])
+        order_obj.delivery_time = datetime.strptime(obj_list[3], '%d.%m.%Y')
+        order_obj.price_rub = order_obj.price_usd * usd_to_rub.value
+        order_obj.save()
 
 
 my_sheet = Sheet('cred.json', '13BC668h2hJNn4K4UlyTd1CxlHghBoxxba8uhNu4Sd2Q', 'Лист1')
-print(my_sheet)
+
 SheetToDatabase(my_sheet.get_sheet())
-
-
 
