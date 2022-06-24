@@ -28,7 +28,7 @@ class Sheet:
                                                           range=name_of_list,
                                                           majorDimension='ROWS')
 
-    def get_sheet(self):
+    def get_sheet(self) -> List[list]:
         sheet: List[list] = self.reader.execute()['values'][1:]
         return sheet
 
@@ -47,7 +47,7 @@ class UsdCourse:
         self.__refresh_value()
 
     @property
-    def value(self):
+    def value(self) -> float:
         if datetime.today() > self.__value[1]:
             self.__refresh_value()
             return self.__value[0]
@@ -60,20 +60,20 @@ class SheetToDatabase:
         usd_to_rub = UsdCourse()
 
         for obj_list in list_of_obj_list:
-            SheetToDatabase.create_object_by_list(obj_list, usd_to_rub)
+            SheetToDatabase.create_object_by_list(obj_list, usd_to_rub.value)
 
     @staticmethod
-    def create_object_by_list(obj_list, usd_to_rub):
+    def create_object_by_list(obj_list: list, usd_to_rub_value: float):
         order_obj = Order()
         order_obj.id_from_sheet = int(obj_list[0])
         order_obj.number_of_order = int(obj_list[1])
         order_obj.price_usd = float(obj_list[2])
         order_obj.delivery_time = datetime.strptime(obj_list[3], '%d.%m.%Y')
-        order_obj.price_rub = order_obj.price_usd * usd_to_rub.value
+        order_obj.price_rub = order_obj.price_usd * usd_to_rub_value
         order_obj.save()
 
+    def difference_between_two_sheet(self, sheet):
+        pass
 
 my_sheet = Sheet('cred.json', '13BC668h2hJNn4K4UlyTd1CxlHghBoxxba8uhNu4Sd2Q', 'Лист1')
-
 SheetToDatabase(my_sheet.get_sheet())
-
