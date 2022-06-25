@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Order(models.Model):
+    """
+    Table of orders
+    """
 
     id_from_sheet = models.IntegerField(verbose_name='№')
     number_of_order = models.IntegerField(verbose_name='заказ №')
